@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://innodatalabs.com/innodom" 
+    xmlns:inno="http://innodatalabs.com/innodom">
+
+    <xs:element name="dom">
+        <xs:annotation>
+            <xs:documentation>
+            Top-level element, wraps metadata and content.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="inno:meta" minOccurs="0" />
+                <xs:element ref="inno:content" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="meta">
+        <xs:annotation>
+            <xs:documentation>
+            Document metadata - a set of key-value datapoints. Information extraction is essentially
+            metadata datapoint creation.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="inno:datapoint"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="datapoint">
+        <xs:annotation>
+            <xs:documentation>
+            Metadata datapoint - a key-value pair with the optional reference to the suporting text in the content,
+            and optional confidence value.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="key" use="required" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>
+                            Datapoint key. By convention, we organize key names in a hierarchy using dot as a delimiter, for example:
+                                "author.name", "author.email"
+                            The hierarchy also allows arrays, where we use digits to indicate the index, for example:
+                                "reference.1.title", "reference.2.title"
+                            The list of available datapoint keys is defined by the taxonomy.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="confidence" type="xs:decimal">
+                        <xs:annotation>
+                            <xs:documentation>
+                            Confidence pertaining to this datapoint.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="idref" type="xs:IDREF">
+                        <xs:annotation>
+                            <xs:documentation>
+                            Points to the most specific content element supporting this datapoint.
+                            Taxonomy determines if this attribute is present or not.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="content">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element maxOccurs="unbounded" ref="inno:text"/>
+                <xs:element maxOccurs="unbounded" ref="inno:table"/>
+                <xs:element maxOccurs="unbounded" ref="inno:image"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="text">
+        <xs:annotation>
+            <xs:documentation>
+            Paragraph of text. Contains one or more layout block.
+            Most of the paragraphs will have just one block. But when paragraph is split across pages or columns,
+            we will have two (or, very rarely, more) blocks here.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="inno:block"/>
+            </xs:sequence>
+            <xs:attribute name="id" use="required" type="xs:ID"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="block">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="inno:RichText">
+                    <xs:attribute name="page" use="required" type="xs:integer">
+                        <xs:annotation>
+                            <xs:documentation>
+                            Page number of this block of text.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="page-height" use="required" type="xs:integer"/>
+                    <xs:attribute name="page-width" use="required" type="xs:integer"/>
+                    <xs:attribute name="x-max" use="required" type="xs:decimal"/>
+                    <xs:attribute name="x-min" use="required" type="xs:decimal"/>
+                    <xs:attribute name="y-max" use="required" type="xs:decimal"/>
+                    <xs:attribute name="y-min" use="required" type="xs:decimal"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="table">
+    </xs:element>
+
+    <xs:element name="image">
+    </xs:element>
+
+    <xs:complexType name="RichText" mixed="true">
+        <xs:annotation>
+            <xs:documentation>
+            Defines the structure of the textual content.
+            The usual mixture of i,b,u,sup,sub,color,br and font.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="br" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                    Hard line break.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="i" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+                <xs:annotation>
+                    <xs:documentation>
+                    Italic text.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="b" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+                <xs:annotation>
+                    <xs:documentation>
+                    Bold text.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="u" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+                <xs:annotation>
+                    <xs:documentation>
+                    Underlined text.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="sub" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+                <xs:annotation>
+                    <xs:documentation>
+                    Subscript text.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="sup" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+                <xs:annotation>
+                    <xs:documentation>
+                    Superscript text.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="color" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+                <xs:annotation>
+                    <xs:documentation>
+                    Colored text span.
+                    Please note that even though this schema seem to allow the color within color
+                    recursion, this never happens in practice.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="font" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                    Specific font.
+                    Please note that even though this schema seem to allow the font within font
+                    recursion, this never happens in practice. When text extraction engine is required
+                    to extract font info, expect to have all text spans wrapped in font. When font info
+                    is not extracted, expect to never see any font information in the rich text.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="inno:RichText">
+                            <xs:attribute name="font-name" use="required" type="xs:string"/>
+                            <xs:attribute name="font-size" use="required" type="inno:FontSizeInPoints"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:simpleType name="FontSizeInPoints">
+        <xs:annotation>
+            <xs:documentation>
+            Value for "font-size" attribute - a decimal number with "pt" suffix. Example:
+                8.5pt
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d+(\.\d+)?pt"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
