@@ -2,130 +2,213 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://innodatalabs.com/innodom" 
     xmlns:inno="http://innodatalabs.com/innodom">
 
-    <xs:element name="dom">
+    <xs:element name="dom" type="inno:DomType" />
+
+    <xs:complexType name="DomType">
         <xs:annotation>
             <xs:documentation>
             Top-level element, wraps metadata and content.
             </xs:documentation>
         </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="inno:meta" minOccurs="0" />
-                <xs:element ref="inno:content" />
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
+        <xs:all>
+            <xs:element name="meta" type="inno:MetaType" minOccurs="0" />
+            <xs:element name="content" type="inno:ContentType" />
+        </xs:all>
+    </xs:complexType>
 
-    <xs:element name="meta">
+    <xs:complexType name="MetaType">
         <xs:annotation>
             <xs:documentation>
-            Document metadata - a set of key-value datapoints. Information extraction is essentially
-            metadata datapoint creation.
+            Document metadata - a set of datapoints. Information extraction is essentially
+            a creation of this datapoint set.
             </xs:documentation>
         </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element maxOccurs="unbounded" ref="inno:datapoint"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="datapoint" type="inno:DatapointType"/>
+        </xs:sequence>
+    </xs:complexType>
 
-    <xs:element name="datapoint">
+    <xs:complexType name="DatapointType">
         <xs:annotation>
             <xs:documentation>
-            Metadata datapoint - a key-value pair with the optional reference to the suporting text in the content,
+            Metadata datapoint - a key-value pair with the optional reference to the supporting text in the content,
             and optional confidence value.
             </xs:documentation>
         </xs:annotation>
-        <xs:complexType>
-            <xs:simpleContent>
-                <xs:extension base="xs:string">
-                    <xs:attribute name="key" use="required" type="xs:string">
-                        <xs:annotation>
-                            <xs:documentation>
-                            Datapoint key. By convention, we organize key names in a hierarchy using dot as a delimiter, for example:
-                                "author.name", "author.email"
-                            The hierarchy also allows arrays, where we use digits to indicate the index, for example:
-                                "reference.1.title", "reference.2.title"
-                            The list of available datapoint keys is defined by the taxonomy.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="confidence" type="xs:decimal">
-                        <xs:annotation>
-                            <xs:documentation>
-                            Confidence pertaining to this datapoint.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="idref" type="xs:IDREF">
-                        <xs:annotation>
-                            <xs:documentation>
-                            Points to the most specific content element supporting this datapoint.
-                            Taxonomy determines if this attribute is present or not.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                </xs:extension>
-            </xs:simpleContent>
-        </xs:complexType>
-    </xs:element>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="key" use="required" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>
+                        Datapoint key. By convention, we organize key names in a hierarchy using dot as a delimiter, for example:
+                            "author.name", "author.email"
+                        The hierarchy also allows arrays, where we use digits to indicate the index, for example:
+                            "reference.1.title", "reference.2.title"
+                        The list of available datapoint keys is defined by the taxonomy.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="confidence" type="xs:decimal">
+                    <xs:annotation>
+                        <xs:documentation>
+                        Confidence pertaining to this datapoint.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="idref" type="xs:IDREF">
+                    <xs:annotation>
+                        <xs:documentation>
+                        Points to the most specific content element supporting this datapoint.
+                        Taxonomy determines if this attribute is required or not.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
 
-    <xs:element name="content">
-        <xs:complexType>
-            <xs:choice>
-                <xs:element maxOccurs="unbounded" ref="inno:text"/>
-                <xs:element maxOccurs="unbounded" ref="inno:table"/>
-                <xs:element maxOccurs="unbounded" ref="inno:image"/>
-            </xs:choice>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:element name="text">
+    <xs:complexType name="ContentType">
         <xs:annotation>
             <xs:documentation>
-            Paragraph of text. Contains one or more layout block.
-            Most of the paragraphs will have just one block. But when paragraph is split across pages or columns,
-            we will have two (or, very rarely, more) blocks here.
+            Structured document content.
             </xs:documentation>
         </xs:annotation>
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element ref="inno:block"/>
-            </xs:sequence>
-            <xs:attribute name="id" use="required" type="xs:ID"/>
-        </xs:complexType>
-    </xs:element>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="table" type="inno:TableType" />
+            <xs:element name="text" type="inno:TextType" />
+            <xs:element name="image" type="inno:ImageType" />
+        </xs:choice>
+    </xs:complexType>
 
-    <xs:element name="block">
-        <xs:complexType>
-            <xs:complexContent>
-                <xs:extension base="inno:RichText">
-                    <xs:attribute name="page" use="required" type="xs:integer">
-                        <xs:annotation>
-                            <xs:documentation>
-                            Page number of this block of text.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="page-height" use="required" type="xs:integer"/>
-                    <xs:attribute name="page-width" use="required" type="xs:integer"/>
-                    <xs:attribute name="x-max" use="required" type="xs:decimal"/>
-                    <xs:attribute name="x-min" use="required" type="xs:decimal"/>
-                    <xs:attribute name="y-max" use="required" type="xs:decimal"/>
-                    <xs:attribute name="y-min" use="required" type="xs:decimal"/>
-                </xs:extension>
-            </xs:complexContent>
-        </xs:complexType>
-    </xs:element>
+    <xs:complexType name="TextType">
+        <xs:annotation>
+            <xs:documentation>
+            Paragraph of text. Contains one or more layout blocks.
+            Most of the paragraphs will have just one block. But when paragraph is split across pages or columns,
+            we will have two (or - very rarely - more) blocks here.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="block" type="inno:TextBlockType" />
+        </xs:sequence>
+        <xs:attribute name="id" use="required" type="xs:ID"/>
+    </xs:complexType>
 
-    <xs:element name="table">
-    </xs:element>
+    <xs:complexType name="TextBlockType">
+        <xs:annotation>
+            <xs:documentation>
+            A block of rich text.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="inno:RichTextType">
+                <xs:attributeGroup ref="inno:BlockAttributes" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
 
-    <xs:element name="image">
-    </xs:element>
+    <xs:attributeGroup name="BlockAttributes">
+        <xs:attribute name="page" use="required" type="xs:integer">
+            <xs:annotation>
+                <xs:documentation>
+                Page number of this block of text.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="page-height" use="required" type="xs:integer"/>
+        <xs:attribute name="page-width" use="required" type="xs:integer"/>
+        <xs:attribute name="x-max" use="required" type="xs:decimal"/>
+        <xs:attribute name="x-min" use="required" type="xs:decimal"/>
+        <xs:attribute name="y-max" use="required" type="xs:decimal"/>
+        <xs:attribute name="y-min" use="required" type="xs:decimal"/>
+    </xs:attributeGroup>
 
-    <xs:complexType name="RichText" mixed="true">
+    <xs:complexType name="TableType">
+        <xs:annotation>
+            <xs:documentation>
+            Table. Contains one or more layout blocks.
+            Most of the tables will have just one block. But sometimes table is split acriss multiple pages
+            and has more than one layout block.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="block" type="inno:TableBlockType" />
+        </xs:sequence>
+        <xs:attribute name="id" use="required" type="xs:ID"/>
+    </xs:complexType>
+
+    <xs:complexType name="TableBlockType">
+        <xs:annotation>
+            <xs:documentation>
+            A block of table content.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="tr" maxOccurs="unbounded" type="inno:TableRowType" />
+        </xs:sequence>
+        <xs:attributeGroup ref="inno:BlockAttributes" />
+    </xs:complexType>
+
+    <xs:complexType name="TableRowType">
+        <xs:annotation>
+            <xs:documentation>
+            A row of table.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="td" maxOccurs="unbounded" type="inno:TableCellType" />
+        </xs:sequence>
+        <xs:attribute name="row" type="xs:integer"/>
+    </xs:complexType>
+
+    <xs:complexType name="TableCellType">
+        <xs:annotation>
+            <xs:documentation>
+            Table cell
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="inno:RichTextType">
+                <xs:attribute name="col" type="xs:integer"/>
+                <xs:attribute name="colspan" type="xs:integer"/>
+                <xs:attribute name="rowspan" type="xs:integer"/>
+                <xs:attribute name="bbox" type="inno:BoundingBox"/>
+                <xs:attribute name="rowpan" type="xs:integer"/> <!-- FIXME: remove after bug is fixed -->
+                <xs:attribute name="id" type="xs:ID"/>
+                <xs:attribute name="x-max" type="xs:decimal"/>
+                <xs:attribute name="x-min" type="xs:decimal"/>
+                <xs:attribute name="y-max" type="xs:decimal"/>
+                <xs:attribute name="y-min" type="xs:decimal"/>
+                <xs:attribute name="cell-bbox" type="inno:BoundingBox"/> <!-- Only in OCR workflow -->
+                <xs:attribute name="content-bbox" type="inno:BoundingBox"/> <!-- Only in OCR workflow -->
+                <xs:attribute name="valign" type="inno:VerticalAlignment"/> <!-- Only in OCR workflow -->
+                <xs:attribute name="halign" type="inno:HorizontalAlignment"/> <!-- Only in OCR workflow -->
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ImageType">
+        <xs:annotation>
+            <xs:documentation>
+            Image/Figure/Chart, etc. (non-textual)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="block" type="inno:ImageBlockType" />
+        </xs:sequence>
+        <xs:attribute name="id" use="required" type="xs:ID"/>
+    </xs:complexType>
+
+    <xs:complexType name="ImageBlockType">
+        <xs:annotation>
+            <xs:documentation>
+            An image block
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="inno:BlockAttributes" />
+    </xs:complexType>
+
+    <xs:complexType name="RichTextType" mixed="true">
         <xs:annotation>
             <xs:documentation>
             Defines the structure of the textual content.
@@ -142,7 +225,7 @@
                 </xs:annotation>
             </xs:element>
 
-            <xs:element name="i" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+            <xs:element name="i" minOccurs="0" maxOccurs="unbounded" type="inno:RichTextType">
                 <xs:annotation>
                     <xs:documentation>
                     Italic text.
@@ -150,7 +233,7 @@
                 </xs:annotation>
             </xs:element>
 
-            <xs:element name="b" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+            <xs:element name="b" minOccurs="0" maxOccurs="unbounded" type="inno:RichTextType">
                 <xs:annotation>
                     <xs:documentation>
                     Bold text.
@@ -158,7 +241,7 @@
                 </xs:annotation>
             </xs:element>
 
-            <xs:element name="u" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+            <xs:element name="u" minOccurs="0" maxOccurs="unbounded" type="inno:RichTextType">
                 <xs:annotation>
                     <xs:documentation>
                     Underlined text.
@@ -166,7 +249,7 @@
                 </xs:annotation>
             </xs:element>
 
-            <xs:element name="sub" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+            <xs:element name="sub" minOccurs="0" maxOccurs="unbounded" type="inno:RichTextType">
                 <xs:annotation>
                     <xs:documentation>
                     Subscript text.
@@ -174,7 +257,7 @@
                 </xs:annotation>
             </xs:element>
 
-            <xs:element name="sup" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+            <xs:element name="sup" minOccurs="0" maxOccurs="unbounded" type="inno:RichTextType">
                 <xs:annotation>
                     <xs:documentation>
                     Superscript text.
@@ -182,7 +265,29 @@
                 </xs:annotation>
             </xs:element>
 
-            <xs:element name="color" minOccurs="0" maxOccurs="unbounded" type="inno:RichText">
+            <xs:element name="nec" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                    Non-extractable character. Can only happen in PDF text extraction, when
+                    character text belongs to a private unicode range or character code is invalid.
+                    To display such a character one needs to capture an image.
+
+                    Attributes:
+                        bbox - bounding box (in PDF coordinates) of this character
+                        fid  - font id (PDF object number followed by colon and PDF generation number)
+                        cid  - the id of this character in the font table
+                        code - unicode point that font associates with this character
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="bbox" use="required" type="inno:BoundingBox" />
+                    <xs:attribute name="cid" use="required" type="xs:integer" />
+                    <xs:attribute name="fid" use="required" type="inno:FontId" />
+                    <xs:attribute name="code" use="required" type="inno:CharacterCode" />
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="color" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>
                     Colored text span.
@@ -190,6 +295,13 @@
                     recursion, this never happens in practice.
                     </xs:documentation>
                 </xs:annotation>
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="inno:RichTextType">
+                            <xs:attribute name="rgb" use="required" type="inno:RGBColor"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
             </xs:element>
 
             <xs:element name="font" minOccurs="0" maxOccurs="unbounded">
@@ -204,7 +316,7 @@
                 </xs:annotation>
                 <xs:complexType>
                     <xs:complexContent>
-                        <xs:extension base="inno:RichText">
+                        <xs:extension base="inno:RichTextType">
                             <xs:attribute name="font-name" use="required" type="xs:string"/>
                             <xs:attribute name="font-size" use="required" type="inno:FontSizeInPoints"/>
                         </xs:extension>
@@ -223,6 +335,76 @@
         </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:pattern value="\d+(\.\d+)?pt"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="BoundingBox">
+        <xs:annotation>
+            <xs:documentation>
+            Value for "bbox" attribute - a 4-tuple of X0,Y0,X1,Y1
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d+(\.\d+)? \d+(\.\d+)? \d+(\.\d+)? \d+(\.\d+)?"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="HorizontalAlignment">
+        <xs:annotation>
+            <xs:documentation>
+            Value for "halign" attribute of a table cell
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="right"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="VerticalAlignment">
+        <xs:annotation>
+            <xs:documentation>
+            Value for "valign" attribute of a table cell
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="top"/>
+            <xs:enumeration value="center"/>
+            <xs:enumeration value="bottom"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="CharacterCode">
+        <xs:annotation>
+            <xs:documentation>
+            Character code, as hexadecimal-formatted number
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="0x[\da-fA-F]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="FontId">
+        <xs:annotation>
+            <xs:documentation>
+            PDF font id
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d+:\d+"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="RGBColor">
+        <xs:annotation>
+            <xs:documentation>
+            Color spec, HTML-style.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="#[\da-fA-F]{6,6}"/>
         </xs:restriction>
     </xs:simpleType>
 

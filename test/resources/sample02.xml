@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf8"?>
+<inno:dom xmlns:inno="http://innodatalabs.com/innodom">
+<inno:content>
+    <inno:text id="text-1">
+        <inno:block page="1" page-height="512" page-width="396" x-max="279.9" x-min="127.03" y-max="72.96" y-min="58.01">Some text here</inno:block>
+    </inno:text>
+    <inno:table id="table-1">
+        <inno:block page="1" page-height="512" page-width="396" x-max="343.64" x-min="59.34" y-max="386.2" y-min="102.93">
+            <inno:tr row="1">
+                <inno:td cell-bbox="442.62 663.66 1275.84 765.87" col="1" content-bbox="453.9 730.8 1124.04 760.38" id="table-1-1-1" valign="top" x-max="212.64" x-min="73.77" y-max="127.64" y-min="110.61">Header 1</inno:td>
+                <inno:td cell-bbox="1275.84 663.66 1428.39 765.87" col="2" content-bbox="1309.98 675.54 1398.6 718.32" halign="center" id="table-1-1-2" x-max="238.06" x-min="212.64" y-max="127.64" y-min="110.61"/>
+                <inno:td cell-bbox="1428.39 663.66 1760.37 765.87" col="3" content-bbox="1524.54 669.72 1621.68 702.24" id="table-1-1-3" x-max="293.39" x-min="238.06" y-max="127.64" y-min="110.61">Value1</inno:td>
+                <inno:td cell-bbox="1760.37 663.66 1930.8 765.87" col="4" content-bbox="1825.68 663.66 1927.5 701.52" halign="right" id="table-1-1-4" x-max="321.8" x-min="293.39" y-max="127.64" y-min="110.61">Value2</inno:td>
+                <inno:td cell-bbox="1930.8 663.66 2048.82 765.87" col="5" id="table-1-1-5" x-max="341.47" x-min="321.8" y-max="127.64" y-min="110.61"/>
+            </inno:tr>
+            <inno:tr row="2">
+                <inno:td cell-bbox="442.62 765.87 1275.84 827.01" col="1" content-bbox="448.8 786.48 948.42 816.66" id="table-1-2-1" valign="top" x-max="212.64" x-min="73.77" y-max="137.83" y-min="127.64">Net income (loss) before income tax</inno:td>
+                <inno:td cell-bbox="1275.84 765.87 1428.39 827.01" col="2" id="table-1-2-2" x-max="238.06" x-min="212.64" y-max="137.83" y-min="127.64">-</inno:td>
+                <inno:td cell-bbox="1428.39 765.87 1760.37 827.01" col="3" content-bbox="1492.92 774.84 1710.42 806.82" halign="center" id="table-1-2-3" x-max="293.39" x-min="238.06" y-max="137.83" y-min="127.64">Php72,266,615</inno:td>
+                <inno:td cell-bbox="1760.37 765.87 2048.82 827.01" col="4" colspan="2" content-bbox="1780.74 771.36 2014.8 807.54" halign="center" id="table-1-2-4" x-max="341.47" x-min="293.39" y-max="137.83" y-min="127.64">Php385,000,892</inno:td>
+            </inno:tr>
+        </inno:block>
+    </inno:table>
+</inno:content>
+<inno:meta>
+    <inno:datapoint key="author.name" confidence="0.95" idref="table-1-1-1">Huh</inno:datapoint>
+</inno:meta>
+</inno:dom>
