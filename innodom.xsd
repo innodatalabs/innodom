@@ -92,6 +92,7 @@
             <xs:element name="block" type="inno:TextBlockType" />
         </xs:sequence>
         <xs:attribute name="id" use="required" type="xs:ID"/>
+        <xs:attribute name="type" type="xs:string">
     </xs:complexType>
 
     <xs:complexType name="TextBlockType">
@@ -108,19 +109,19 @@
     </xs:complexType>
 
     <xs:attributeGroup name="BlockAttributes">
-        <xs:attribute name="page" use="required" type="xs:integer">
+        <xs:attribute name="page" type="xs:integer">
             <xs:annotation>
                 <xs:documentation>
                 Page number of this block of text.
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="page-height" use="required" type="xs:integer"/>
-        <xs:attribute name="page-width" use="required" type="xs:integer"/>
-        <xs:attribute name="x-max" use="required" type="xs:decimal"/>
-        <xs:attribute name="x-min" use="required" type="xs:decimal"/>
-        <xs:attribute name="y-max" use="required" type="xs:decimal"/>
-        <xs:attribute name="y-min" use="required" type="xs:decimal"/>
+        <xs:attribute name="page-height" type="xs:integer"/>
+        <xs:attribute name="page-width" type="xs:integer"/>
+        <xs:attribute name="x-max" type="xs:decimal"/>
+        <xs:attribute name="x-min" type="xs:decimal"/>
+        <xs:attribute name="y-max" type="xs:decimal"/>
+        <xs:attribute name="y-min" type="xs:decimal"/>
     </xs:attributeGroup>
 
     <xs:complexType name="TableType">
@@ -135,6 +136,7 @@
             <xs:element name="block" type="inno:TableBlockType" />
         </xs:sequence>
         <xs:attribute name="id" use="required" type="xs:ID"/>
+        <xs:attribute name="type" type="xs:string">
     </xs:complexType>
 
     <xs:complexType name="TableBlockType">
@@ -197,6 +199,7 @@
             <xs:element name="block" type="inno:ImageBlockType" />
         </xs:sequence>
         <xs:attribute name="id" use="required" type="xs:ID"/>
+        <xs:attribute name="type" type="xs:string">
     </xs:complexType>
 
     <xs:complexType name="ImageBlockType">
