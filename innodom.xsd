@@ -103,7 +103,7 @@
         </xs:annotation>
         <xs:complexContent>
             <xs:extension base="inno:RichTextType">
-                <xs:attributeGroup ref="inno:TextBlockAttributes" />
+                <xs:attributeGroup ref="inno:BlockAttributes" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -122,11 +122,6 @@
         <xs:attribute name="x-min" type="xs:decimal"/>
         <xs:attribute name="y-max" type="xs:decimal"/>
         <xs:attribute name="y-min" type="xs:decimal"/>
-    </xs:attributeGroup>
-
-    <xs:attributeGroup name="TextBlockAttributes">
-        <xs:attributeGroup ref="inno:BlockAttributes"/>
-        <xs:attribute name="ocr-confidence" type="xs:decimal"/>
     </xs:attributeGroup>
 
     <xs:complexType name="TableType">
@@ -154,6 +149,7 @@
             <xs:element name="tr" maxOccurs="unbounded" type="inno:TableRowType" />
         </xs:sequence>
         <xs:attributeGroup ref="inno:BlockAttributes" />
+        <xs:attribute name="ocr-confidence" type="xs:decimal"/>
     </xs:complexType>
 
     <xs:complexType name="TableRowType">
