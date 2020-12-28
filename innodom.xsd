@@ -103,7 +103,7 @@
         </xs:annotation>
         <xs:complexContent>
             <xs:extension base="inno:RichTextType">
-                <xs:attributeGroup ref="inno:BlockAttributes" />
+                <xs:attributeGroup ref="inno:TextBlockAttributes" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -122,6 +122,11 @@
         <xs:attribute name="x-min" type="xs:decimal"/>
         <xs:attribute name="y-max" type="xs:decimal"/>
         <xs:attribute name="y-min" type="xs:decimal"/>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="TextBlockAttributes">
+        <xs:attributeGroup ref="inno:BlockAttributes"/>
+        <xs:attribute name="confidence" type="xs:decimal"/>
     </xs:attributeGroup>
 
     <xs:complexType name="TableType">
@@ -185,6 +190,7 @@
                 <xs:attribute name="content-bbox" type="inno:BoundingBox"/> <!-- Only in OCR workflow -->
                 <xs:attribute name="valign" type="inno:VerticalAlignment"/> <!-- Only in OCR workflow -->
                 <xs:attribute name="halign" type="inno:HorizontalAlignment"/> <!-- Only in OCR workflow -->
+                <xs:attribute name="confidence" type="xs:decimal"/> <!-- Only in OCR workflow -->
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
