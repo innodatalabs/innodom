@@ -149,6 +149,7 @@
             <xs:element name="tr" maxOccurs="unbounded" type="inno:TableRowType" />
         </xs:sequence>
         <xs:attributeGroup ref="inno:BlockAttributes" />
+        <xs:attribute name="ocr-confidence" type="xs:decimal"/>
     </xs:complexType>
 
     <xs:complexType name="TableRowType">
@@ -185,6 +186,7 @@
                 <xs:attribute name="content-bbox" type="inno:BoundingBox"/> <!-- Only in OCR workflow -->
                 <xs:attribute name="valign" type="inno:VerticalAlignment"/> <!-- Only in OCR workflow -->
                 <xs:attribute name="halign" type="inno:HorizontalAlignment"/> <!-- Only in OCR workflow -->
+                <xs:attribute name="ocr-confidence" type="xs:decimal"/> <!-- Only in OCR workflow -->
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
