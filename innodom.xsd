@@ -104,6 +104,7 @@
         <xs:complexContent>
             <xs:extension base="inno:RichTextType">
                 <xs:attributeGroup ref="inno:BlockAttributes" />
+                <xs:attribute name="ocr-confidence" type="xs:decimal"/>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
