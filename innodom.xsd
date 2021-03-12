@@ -63,6 +63,10 @@
                         </xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
+                <xs:attribute name="point" type="xs:string" />
+                <xs:attribute name="point_order" type="xs:decimal" />
+                <xs:attribute name="group" type="xs:string" />
+                <xs:attribute name="group_order" type="xs:decimal" />
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
