@@ -80,6 +80,7 @@
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="table" type="inno:TableType" />
             <xs:element name="text" type="inno:TextType" />
+            <xs:element name="math" type="inno:ImageType" />
             <xs:element name="image" type="inno:ImageType" />
         </xs:choice>
     </xs:complexType>
