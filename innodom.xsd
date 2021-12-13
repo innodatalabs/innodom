@@ -67,6 +67,7 @@
                 <xs:attribute name="point_order" type="xs:decimal" />
                 <xs:attribute name="group" type="xs:string" />
                 <xs:attribute name="group_order" type="xs:decimal" />
+                <xs:attribute name="format" type="xs:string" />
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -80,6 +81,7 @@
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="table" type="inno:TableType" />
             <xs:element name="text" type="inno:TextType" />
+            <xs:element name="math" type="inno:TextType" />
             <xs:element name="image" type="inno:ImageType" />
         </xs:choice>
     </xs:complexType>
