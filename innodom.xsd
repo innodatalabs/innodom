@@ -181,7 +181,6 @@
                 <xs:attribute name="colspan" type="xs:integer"/>
                 <xs:attribute name="rowspan" type="xs:integer"/>
                 <xs:attribute name="bbox" type="inno:BoundingBox"/>
-                <xs:attribute name="rowpan" type="xs:integer"/> <!-- FIXME: remove after bug is fixed -->
                 <xs:attribute name="id" type="xs:ID"/>
                 <xs:attribute name="x-max" type="xs:decimal"/>
                 <xs:attribute name="x-min" type="xs:decimal"/>
@@ -199,7 +198,7 @@
     <xs:complexType name="ImageType">
         <xs:annotation>
             <xs:documentation>
-            Image/Figure/Chart, etc. (non-textual)
+            Image/Figure/Chart, etc. (might have extractable text)
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
@@ -215,7 +214,12 @@
             An image block
             </xs:documentation>
         </xs:annotation>
-        <xs:attributeGroup ref="inno:BlockAttributes" />
+        <xs:complexContent>
+            <xs:extension base="inno:RichTextType">
+                <xs:attributeGroup ref="inno:BlockAttributes" />
+                <xs:attribute name="ocr-confidence" type="xs:decimal"/>
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="RichTextType" mixed="true">
