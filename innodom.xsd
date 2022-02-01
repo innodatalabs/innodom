@@ -20,7 +20,9 @@
         <xs:annotation>
             <xs:documentation>
             Document metadata - a set of datapoints. Information extraction is essentially
-            a creation of this datapoint set.
+                a creation of this datapoint set. 
+            The sequence of datapoints is unordered. Datapoints order should not be used to infer 
+                reading order or grouping or importance.
             </xs:documentation>
         </xs:annotation>
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
