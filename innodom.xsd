@@ -131,6 +131,13 @@
         <xs:attribute name="x-min" type="xs:decimal"/>
         <xs:attribute name="y-max" type="xs:decimal"/>
         <xs:attribute name="y-min" type="xs:decimal"/>
+        <xs:attribute name="continued-from" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>
+                Indicates that this block is a continuation of a previous block
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:attributeGroup>
 
     <xs:complexType name="TableType">
