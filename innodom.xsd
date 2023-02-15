@@ -335,8 +335,8 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="inno:RichTextType">
-                            <xs:attribute name="font-name" use="required" type="xs:string"/>
-                            <xs:attribute name="font-size" use="required" type="inno:FontSizeInPoints"/>
+                            <xs:attribute name="font-name" type="xs:string"/>
+                            <xs:attribute name="font-size" type="inno:FontSizeInPoints"/>
                         </xs:extension>
                     </xs:complexContent>
                 </xs:complexType>
