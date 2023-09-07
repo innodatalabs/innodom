@@ -190,6 +190,7 @@
                 <xs:attribute name="x-min" type="xs:decimal"/>
                 <xs:attribute name="y-max" type="xs:decimal"/>
                 <xs:attribute name="y-min" type="xs:decimal"/>
+                <xs:attribute name="cell-type" type="xs:string"/>
                 <xs:attribute name="cell-bbox" type="inno:BoundingBox"/> <!-- Only in OCR workflow -->
                 <xs:attribute name="content-bbox" type="inno:BoundingBox"/> <!-- Only in OCR workflow -->
                 <xs:attribute name="valign" type="inno:VerticalAlignment"/> <!-- Only in OCR workflow -->
