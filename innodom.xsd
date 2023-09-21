@@ -99,8 +99,7 @@
         <xs:sequence>
             <xs:element name="block" type="inno:TextBlockType" />
         </xs:sequence>
-        <xs:attribute name="id" use="required" type="xs:ID"/>
-        <xs:attribute name="type" type="xs:string" />
+        <xs:attributeGroup ref="inno:ContentAttributes" />
     </xs:complexType>
 
     <xs:complexType name="TextBlockType">
@@ -116,6 +115,18 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+
+    <xs:attributeGroup name="ContentAttributes">
+        <xs:attribute name="id" use="required" type="xs:ID"/>
+        <xs:attribute name="type" type="xs:string" />
+        <xs:attribute name="continued-from" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>
+                Indicates that this content is a continuation of previous content
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
 
     <xs:attributeGroup name="BlockAttributes">
         <xs:attribute name="page" type="xs:integer">
@@ -144,8 +155,7 @@
         <xs:sequence>
             <xs:element name="block" type="inno:TableBlockType" />
         </xs:sequence>
-        <xs:attribute name="id" use="required" type="xs:ID"/>
-        <xs:attribute name="type" type="xs:string" />
+        <xs:attributeGroup ref="inno:ContentAttributes" />
     </xs:complexType>
 
     <xs:complexType name="TableBlockType">
@@ -209,8 +219,7 @@
         <xs:sequence>
             <xs:element name="block" type="inno:ImageBlockType" />
         </xs:sequence>
-        <xs:attribute name="id" use="required" type="xs:ID"/>
-        <xs:attribute name="type" type="xs:string" />
+        <xs:attributeGroup ref="inno:ContentAttributes" />
     </xs:complexType>
 
     <xs:complexType name="ImageBlockType">
