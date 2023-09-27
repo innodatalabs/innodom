@@ -293,6 +293,14 @@
                 </xs:annotation>
             </xs:element>
 
+            <xs:element name="s" minOccurs="0" maxOccurs="unbounded" type="inno:RichTextType">
+                <xs:annotation>
+                    <xs:documentation>
+                    Strikethrough text.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
             <xs:element name="nec" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>
@@ -345,6 +353,7 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="inno:RichTextType">
+                            <xs:attribute name="font-variant" type="xs:string"/>
                             <xs:attribute name="font-name" type="xs:string"/>
                             <xs:attribute name="font-size" type="inno:FontSizeInPoints"/>
                         </xs:extension>
